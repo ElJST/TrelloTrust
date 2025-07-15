@@ -1,59 +1,44 @@
 import {
-  getAllUsers,
-  getUserById,
   insertUser,
-  updateUser,
-  deleteUser
+  getUserByEmail
 } from "../models/user.model.js";
+import bcrypt from "bcryptjs";
 
-export const getUsers = async (req, res) => {
-  try {
-    const users = await getAllUsers();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-export const getUser = async (req, res) => {
-  try {
-    const user = await getUserById(req.params.id);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-export const createUser = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    // Aquí deberías añadir validaciones y hash de contraseña en producción
-    const result = await insertUser({ username, email, password });
+
+    const existing = await getUserByEmail(email) || 0;
+
+    if (existing != 0) {
+      return res.status(409).json({ error: "Email already registered" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const result = await insertUser({ username, email, password: hashedPassword });
+
     res.status(201).json({ id: result.insertId, username, email });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-export const updateUserController = async (req, res) => {
-  try {
-    const { username, email } = req.body;
-    const result = await updateUser(req.params.id, { username, email });
-    if (result.affectedRows === 0)
-      return res.status(404).json({ error: "User not found" });
-    res.json({ message: "User updated" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
 
-export const deleteUserController = async (req, res) => {
+export const login = async (req, res) => {
   try {
-    const result = await deleteUser(req.params.id);
-    if (result.affectedRows === 0)
-      return res.status(404).json({ error: "User not found" });
-    res.json({ message: "User deleted" });
+    const { email, password } = req.body;
+    const user = await getUserByEmail(email);
+
+    if (!user) return res.status(401).json({ message: "Email not found" });
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) return res.status(401).json({ message: "Incorrect password" });
+
+    res.json({
+      id: user.id,
+      name: user.username,
+      email: user.email
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
