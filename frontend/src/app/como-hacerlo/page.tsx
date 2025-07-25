@@ -1,4 +1,7 @@
-import Board from "@/components/Board";
 export default function HowDoIt() {
-  return <Board />;
+  return (
+    <section className="min-h-screen">
+      <p>como hacerlo</p>
+    </section>
+  );
 }

@@ -20,16 +20,17 @@ export default function RootLayout({
 }>) {
   const pathName = usePathname();
   const hideLayout = pathName === "/login" || pathName === "/register";
+  const hideFooter = pathName === "/board";
   return (
     <html lang="en">
       <body className={myFont.className}>
         <HeroProvider>
           <QueryProvider>
             <SessionAuthProvider>
-              <main className="dark text-foreground bg-background min-h-screen">
+              <main className="dark text-foreground bg-background">
                 {!hideLayout && <NavBar />}
-                <section className="min-h-screen">{children}</section>
-                <Footer />
+                {children}
+                {!hideFooter && <Footer />}
               </main>
             </SessionAuthProvider>
           </QueryProvider>

@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
+import cardRoutes from "./routes/card.routes.js";
 
 dotenv.config();
 const app = express();
@@ -12,6 +13,9 @@ app.use(express.json());
 
 //rutas para los usuarios
 app.use("/api/users", userRoutes);
+
+// rutas para las cards
+app.use("/api/cards", cardRoutes)
 
 //middleware (pendiente)
 

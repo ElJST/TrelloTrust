@@ -83,7 +83,7 @@ export const NavBar = () => {
                     <p className="font-bold">{session.user.email}</p>
                   </DropdownItem>
                   <DropdownItem key="settings" color="primary">
-                    Nuevo proyecto
+                    <Link href={"/board"}>Nuevo proyecto</Link>
                   </DropdownItem>
                   <DropdownItem key="team_settings" color="primary">
                     Editar proyecto
