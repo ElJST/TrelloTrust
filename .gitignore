@@ -17,5 +17,5 @@ Thumbs.db
 **/.tailwindcache/
 
 # Datos Frontend
-mysql-data/
-mysql-data/*
+mysql_data/
+mysql_data/*
