@@ -2,23 +2,20 @@
 import  Board  from "./board/Board";
 import React, { useState, useEffect } from "react";
 import { CardType } from "./board/types";
+import axios from "axios";
+import { useParams } from "next/navigation";
 
 export default function CustomKanban() {
   const [cards, setCards] = useState<CardType[]>([]);
+  const { boardId } = useParams();
 
-  // fetch global para cargar las cards
   const fetchCards = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/cards/all-cards");
-      const data = await res.json();
-
-      setCards(
-        data.map((card: any) => ({
-          id: card.id,
-          title: card.title,
-          column: card.column_name,
-        }))
-      );
+      const res = await axios.post("http://localhost:5000/api/cards/get-card",{
+        board_id: boardId,
+      });
+      console.log(res.data);
+      setCards(res.data);
     } catch (err) {
       console.error("❌ Error fetching cards:", err);
     }

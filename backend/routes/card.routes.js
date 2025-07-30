@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getAllCards,
+  getCard,
   postCards,
   updateCardColumn,
   deleteCard
@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get("/all-cards", getAllCards);
+router.post("/get-card", getCard);
 router.post("/add-card", postCards);
 router.patch("/update-card", updateCardColumn);
 router.delete("/delete-card/:id", deleteCard);

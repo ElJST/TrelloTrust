@@ -1,8 +1,9 @@
 import { getCards, insertCards, moveCards, deleteCardModel } from "../models/card.model.js";
 
-export const getAllCards = async (req, res) => {
+export const getCard = async (req, res) => {
   try {
-    const cards = await getCards();
+    const { board_id } = req.body;
+    const cards = await getCards(board_id);
     res.status(200).json(cards);
   } catch (err) {
     res.status(500).json({ error: err.message });

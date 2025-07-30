@@ -28,6 +28,7 @@ export const Board = () => {
       <Column
         title="TODO"
         column="todo"
+        fetchCards={fetchCards}
         headingColor="text-slate-200"
         cards={cards}
         setCards={setCards}
@@ -35,6 +36,7 @@ export const Board = () => {
       <Column
         title="In progress"
         column="doing"
+        fetchCards={fetchCards}
         headingColor="text-yellow-200"
         cards={cards}
         setCards={setCards}
@@ -42,11 +44,12 @@ export const Board = () => {
       <Column
         title="Complete"
         column="done"
+        fetchCards={fetchCards}
         headingColor="text-emerald-200"
         cards={cards}
         setCards={setCards}
       />
-      <BurnBarrel setCards={setCards} />
+      <BurnBarrel setCards={setCards} fetchCards={fetchCards} />
     </div>
   );
 };

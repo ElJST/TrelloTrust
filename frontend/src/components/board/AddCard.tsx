@@ -3,6 +3,7 @@ import { useState, FormEvent, Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import { FiPlus } from "react-icons/fi";
 import { CardType, ColumnType } from "./types";
+import axios from "axios";
 
 type AddCardProps = {
   column: ColumnType;
@@ -26,17 +27,16 @@ export const AddCard = ({ column, setCards }: AddCardProps) => {
 
     // ✅ Card para el backend
     const backendCard = {
+      id: newCard.id,
+      board_id: 1, 
       title: newCard.title,
       column_name: newCard.column, 
-      board_id: 1,       
     };
 
     setCards((prev) => [...prev, newCard]);
 
-    await fetch("http://localhost:5000/api/cards/add-card", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(backendCard),
+    await axios.post("http://localhost:5000/api/cards/add-card", {
+      ...backendCard,
     });
 
     setAdding(false);

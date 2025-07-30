@@ -42,32 +42,53 @@ export const NavBar = () => {
 
   const getIdUser = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/users/get-id-user", {
-        email: session?.user?.email,
-      });
-  
+      const response = await axios.post(
+        "http://localhost:5000/api/users/get-id-user",
+        {
+          email: session?.user?.email,
+        }
+      );
+
       const userId = response.data.id;
-  
+
       getBoardId(userId);
     } catch (error) {
       console.error("Error getIdUser:", error);
     }
   };
-  
+
   const getBoardId = async (userId: number) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/boards/new-board", {
-        user_id: userId,
-        title: `Proyecto ${userId}`,
-      });
-  
+      const response = await axios.post(
+        "http://localhost:5000/api/boards/new-board",
+        {
+          user_id: userId,
+          title: `Proyecto del usuario ${userId}`,
+        }
+      );
+
       const boardId = response.data.id;
-  
-      router.push(`/user/${userId}/board/${boardId}`);
+      
+      createNewCard(userId, boardId);
+
     } catch (error) {
       console.error("Error getBoardId:", error);
     }
   };
+
+  const createNewCard = async (idUser: number, idBoard: number) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/cards/add-card", {
+        board_id: idBoard,
+        title: "Tarea de ejemplo",
+        column_name: "todo",
+      });
+      console.log(response.data);
+      router.push(`/user/${idUser}/board/${idBoard}`);
+    } catch (error) {
+      console.error("Error createNewCard:", error);
+    }
+  }
 
   return (
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen} isMenuOpen={isMenuOpen}>
@@ -101,7 +122,7 @@ export const NavBar = () => {
         <NavbarItem>
           {status === "loading" ? null : session?.user ? (
             <section className="flex">
-              <Dropdown placement="bottom-start" >
+              <Dropdown placement="bottom-start">
                 <DropdownTrigger>
                   <User
                     as="button"
@@ -109,7 +130,7 @@ export const NavBar = () => {
                     name={session.user.name}
                   />
                 </DropdownTrigger>
-                <DropdownMenu variant="shadow" >
+                <DropdownMenu variant="shadow">
                   <DropdownItem key="profile" className="h-14 gap-2">
                     <p className="font-bold">Correo</p>
                     <p className="font-bold">{session.user.email}</p>
@@ -124,7 +145,11 @@ export const NavBar = () => {
                     key="logout"
                     color="danger"
                     as="button"
-                    onPress={() => signOut()}
+                    onPress={() => {
+                      signOut({
+                        callbackUrl: "/",
+                      });
+                    }}
                   >
                     Cerrar Sesión
                   </DropdownItem>
