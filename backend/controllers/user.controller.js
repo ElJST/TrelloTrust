@@ -1,6 +1,7 @@
 import {
   insertUser,
-  getUserByEmail
+  getUserByEmail,
+  findUserIdByEmail
 } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
@@ -23,6 +24,17 @@ export const register = async (req, res) => {
   }
 };
 
+export const getIdUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const existing = await findUserIdByEmail(email) || 0;
+    
+    res.status(201).json({ id:existing.id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 export const login = async (req, res) => {
   try {

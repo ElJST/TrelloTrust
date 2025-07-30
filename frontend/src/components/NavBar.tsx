@@ -19,11 +19,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathName = usePathname();
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   type MenuItemsStage = {
     Inicio: string;
@@ -35,6 +38,35 @@ export const NavBar = () => {
     Inicio: "/",
     "Que puedes hacer": "/que-puedes-hacer",
     "Como Hacerlo": "/como-hacerlo",
+  };
+
+  const getIdUser = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/users/get-id-user", {
+        email: session?.user?.email,
+      });
+  
+      const userId = response.data.id;
+  
+      getBoardId(userId);
+    } catch (error) {
+      console.error("Error getIdUser:", error);
+    }
+  };
+  
+  const getBoardId = async (userId: number) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/boards/new-board", {
+        user_id: userId,
+        title: `Proyecto ${userId}`,
+      });
+  
+      const boardId = response.data.id;
+  
+      router.push(`/user/${userId}/board/${boardId}`);
+    } catch (error) {
+      console.error("Error getBoardId:", error);
+    }
   };
 
   return (
@@ -83,7 +115,7 @@ export const NavBar = () => {
                     <p className="font-bold">{session.user.email}</p>
                   </DropdownItem>
                   <DropdownItem key="settings" color="primary">
-                    <Link href={"/board"}>Nuevo proyecto</Link>
+                    <button onClick={getIdUser}>Nuevo proyecto</button>
                   </DropdownItem>
                   <DropdownItem key="team_settings" color="primary">
                     Editar proyecto

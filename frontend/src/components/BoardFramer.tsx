@@ -6,7 +6,7 @@ import { CardType } from "./board/types";
 export default function CustomKanban() {
   const [cards, setCards] = useState<CardType[]>([]);
 
-  // ✅ fetch global para cargar las cards
+  // fetch global para cargar las cards
   const fetchCards = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/cards/all-cards");

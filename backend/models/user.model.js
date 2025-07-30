@@ -8,6 +8,14 @@ export const getUserByEmail = async (email) => {
   return rows[0];
 };
 
+export const findUserIdByEmail = async (email) => {
+  const [rows] = await db.query(
+    "SELECT id FROM users WHERE email = ?",
+    [email]
+  );
+  return rows[0];
+};
+
 export const insertUser = async ({ username, email, password }) => {
   const [result] = await db.query(
     "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
