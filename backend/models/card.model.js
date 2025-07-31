@@ -2,7 +2,7 @@ import { db } from "../connection-bbdd/connection.js";
 
 export const getCards = async (board_id) => {
   const [rows] = await db.query("SELECT * FROM cards WHERE board_id = ?", [board_id]);
-  return rows[0];
+  return rows;
 };
 
 export const insertCards = async (board_id, title, column_name) => {
