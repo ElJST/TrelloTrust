@@ -24,5 +24,5 @@ app.use("/api/boards", boardRoutes)
 //middleware (pendiente)
 
 app.listen(port, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
+  console.log(`Servidor corriendo en http://localhost:${port}`);
 });

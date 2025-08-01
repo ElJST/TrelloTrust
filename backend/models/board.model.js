@@ -7,3 +7,11 @@ export const queryInsertBoard = async (user_id, title) => {
   );
   return rows;
 };
+
+export const queryGetBoardsByUser = async (id) => {
+  const [rows] = await db.query(
+    "SELECT id, title FROM boards WHERE user_id = ?",
+    [id]
+  );
+  return rows;
+};

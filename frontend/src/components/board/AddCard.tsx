@@ -3,6 +3,7 @@ import { useState, FormEvent, Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import { FiPlus } from "react-icons/fi";
 import { CardType, ColumnType } from "./types";
+import { useParams } from "next/navigation";
 import axios from "axios";
 
 type AddCardProps = {
@@ -13,6 +14,7 @@ type AddCardProps = {
 export const AddCard = ({ column, setCards }: AddCardProps) => {
   const [text, setText] = useState("");
   const [adding, setAdding] = useState(false);
+  const { boardId } = useParams();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ export const AddCard = ({ column, setCards }: AddCardProps) => {
     // ✅ Card para el backend
     const backendCard = {
       id: newCard.id,
-      board_id: 1, 
+      board_id: boardId, 
       title: newCard.title,
       column_name: newCard.column, 
     };

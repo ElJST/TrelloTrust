@@ -39,7 +39,7 @@ export const NavBar = () => {
     "Que puedes hacer": "/que-puedes-hacer",
     "Como Hacerlo": "/como-hacerlo",
   };
-
+  // funcion para obtener el id del usuario activo 
   const getIdUser = async () => {
     try {
       const response = await axios.post(
@@ -56,7 +56,7 @@ export const NavBar = () => {
       console.error("Error getIdUser:", error);
     }
   };
-
+  // funcion para crear un nuevo tablero  
   const getBoardId = async (userId: number) => {
     try {
       const response = await axios.post(
@@ -75,7 +75,8 @@ export const NavBar = () => {
       console.error("Error getBoardId:", error);
     }
   };
-
+  // funcion para crear una tarjeta de ejemplo y redirigir al usuario al tablero creado
+  // con el id del usuario y el id del tablero  
   const createNewCard = async (idUser: number, idBoard: number) => {
     try {
       const response = await axios.post("http://localhost:5000/api/cards/add-card", {
@@ -83,7 +84,7 @@ export const NavBar = () => {
         title: "Tarea de ejemplo",
         column_name: "todo",
       });
-      console.log(response.data);
+
       router.push(`/user/${idUser}/board/${idBoard}`);
     } catch (error) {
       console.error("Error createNewCard:", error);
@@ -139,7 +140,7 @@ export const NavBar = () => {
                     <button onClick={getIdUser}>Nuevo proyecto</button>
                   </DropdownItem>
                   <DropdownItem key="team_settings" color="primary">
-                    Editar proyecto
+                    <Link href={'/boards/list'}>Editar proyecto</Link>
                   </DropdownItem>
                   <DropdownItem
                     key="logout"
