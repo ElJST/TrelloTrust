@@ -5,3 +5,8 @@ export type CardType = {
   title: string;
   column: ColumnType;
 };
+
+export type TableBoardType = {
+  id: number;
+  title: string;
+};

@@ -1,6 +1,6 @@
 "use client";
 import { useState, DragEvent, Dispatch, SetStateAction } from "react";
-import { CardType, ColumnType } from "./types";
+import { CardType, ColumnType } from "../../types/types";
 import { Card } from "./Card";
 import { DropIndicator } from "./DropIndicator";
 import { AddCard } from "./AddCard";
@@ -87,7 +87,7 @@ export const Column = ({
 
   const updateCardColumn = async (cardId: string, column_name: string) => {
     const response = await fetch(
-      "http://localhost:5000/api/cards/update-card",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/cards/update-card`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

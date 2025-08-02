@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction, useState, DragEvent } from "react";
 import { FaFire } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
-import { CardType } from "./types";
+import { CardType } from "../../types/types";
 
 export const BurnBarrel = ({
   setCards,
@@ -32,7 +32,7 @@ export const BurnBarrel = ({
 
   const deleteCardFromDB = async (cardId: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/cards/delete-card/${cardId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cards/delete-card/${cardId}`, {
         method: "DELETE",
       });
   

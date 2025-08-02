@@ -1,4 +1,4 @@
-import express from "express"
+import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
@@ -16,13 +16,13 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 
 // rutas para las cards
-app.use("/api/cards", cardRoutes)
+app.use("/api/cards", cardRoutes);
 
 // rutas para los boards
-app.use("/api/boards", boardRoutes)
+app.use("/api/boards", boardRoutes);
 
 //middleware (pendiente)
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Servidor escuchando en 0.0.0.0:${port}`);
 });

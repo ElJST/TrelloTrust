@@ -43,7 +43,7 @@ export const NavBar = () => {
   const getIdUser = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/get-id-user",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/get-id-user`,
         {
           email: session?.user?.email,
         }
@@ -60,7 +60,7 @@ export const NavBar = () => {
   const getBoardId = async (userId: number) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/boards/new-board",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/boards/new-board`,
         {
           user_id: userId,
           title: `Proyecto del usuario ${userId}`,
@@ -79,7 +79,7 @@ export const NavBar = () => {
   // con el id del usuario y el id del tablero  
   const createNewCard = async (idUser: number, idBoard: number) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/cards/add-card", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/cards/add-card`, {
         board_id: idBoard,
         title: "Tarea de ejemplo",
         column_name: "todo",

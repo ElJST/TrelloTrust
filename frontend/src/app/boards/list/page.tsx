@@ -2,27 +2,24 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { TableBoardType } from "@/types/types";
+import TableBoards from "@/components/TableBoards";
+import { Divider } from "@heroui/react";
 
 export default function ListBoardsPage() {
-  type Board = {
-    id: number;
-    title: string;
-  };
-  const [boards, setBoards] = useState<Board[]>([]);
+  const [boards, setBoards] = useState<TableBoardType[]>([]);
   const { data: session } = useSession();
 
   const getIdUser = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/get-id-user",
+        "http://192.168.1.157:5000/api/users/get-id-user",
         {
           email: session?.user?.email,
         }
       );
 
-      const userId = response.data.id;
-
-      fetchListBoards(userId);
+      fetchListBoards(response.data.id);
     } catch (error) {
       console.error("Error getIdUser:", error);
     }
@@ -31,14 +28,13 @@ export default function ListBoardsPage() {
   const fetchListBoards = async (id: number) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/boards/get-boards",
+        "http://192.168.1.157:5000/api/boards/get-boards",
         {
           user_id: id,
         }
       );
-      const ids = response;
-      console.log("list boards:", ids.data);
-      setBoards(response.data);
+      setBoards(response.data.result);
+      debugger;
     } catch (error) {
       console.error("Error getBoards:", error);
     }
@@ -50,9 +46,9 @@ export default function ListBoardsPage() {
   }, [session]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h2>edit mode</h2>
-
+    <div className="min-h-screen flex flex-col items-center justify-center ">
+      <TableBoards boards={boards} setBoards={setBoards} />
+      <Divider className="my-4 w-3/4" />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 import { useState, FormEvent, Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import { FiPlus } from "react-icons/fi";
-import { CardType, ColumnType } from "./types";
+import { CardType, ColumnType } from "../../types/types";
 import { useParams } from "next/navigation";
 import axios from "axios";
 
@@ -37,7 +37,7 @@ export const AddCard = ({ column, setCards }: AddCardProps) => {
 
     setCards((prev) => [...prev, newCard]);
 
-    await axios.post("http://localhost:5000/api/cards/add-card", {
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/cards/add-card`, {
       ...backendCard,
     });
 

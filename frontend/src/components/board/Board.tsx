@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Column } from "@/components/board/Column";
 import { BurnBarrel } from "@/components/board/BurnBarrel";
-import { CardType } from "./types";
+import { CardType } from "../../types/types";
 
 type BoardProps = {
   cards: CardType[];

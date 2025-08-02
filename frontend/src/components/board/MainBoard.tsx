@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { CardType } from "./types";
+import { CardType } from "../../types/types";
 import { Column } from "./Column";
 import { BurnBarrel } from "./BurnBarrel";
 
@@ -8,7 +8,7 @@ export const Board = () => {
   const [cards, setCards] = useState<CardType[]>([]);
 
   const fetchCards = async () => {
-    const res = await fetch("http://localhost:5000/api/cards/all-cards");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cards/all-cards`);
     const data = await res.json();
     setCards(
       data.map((card: any) => ({

@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { DropIndicator } from "./DropIndicator";
-import { CardType } from "./types";
+import { CardType } from "../../types/types";
 
 type CardProps = CardType & {
   handleDragStart: Function;
