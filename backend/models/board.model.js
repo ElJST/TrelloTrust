@@ -15,3 +15,11 @@ export const queryGetBoardsByUser = async (id) => {
   );
   return rows;
 };
+
+export const queryGetBoardsById = async (id) => {
+  const [rows] = await db.query(
+    "SELECT id, title FROM boards WHERE id = ?",
+    [id]
+  );
+  return rows;
+};
