@@ -1,7 +1,9 @@
 import { db } from "../connection-bbdd/connection.js";
 
 export const getCards = async (board_id) => {
-  const [rows] = await db.query("SELECT * FROM cards WHERE board_id = ?", [board_id]);
+  const [rows] = await db.query("SELECT * FROM cards WHERE board_id = ?", [
+    board_id,
+  ]);
   return rows;
 };
 
@@ -24,4 +26,12 @@ export const moveCards = async (id, column_name) => {
 export const deleteCardModel = async (id) => {
   const [rows] = await db.query("DELETE FROM cards WHERE id = ?", [id]);
   return rows;
+};
+
+export const updateCardOrden = async (i, column_name, id) => {
+  const [rows] = await db.query(
+    "UPDATE cards SET card_order = ?, column_name = ? WHERE id = ?",
+    [i, column_name, id]
+  );
+  return rows
 };

@@ -2,25 +2,23 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Column } from "@/components/board/Column";
 import { BurnBarrel } from "@/components/board/BurnBarrel";
 import { CardType, TableBoardType as BoardType } from "../../types/types";
+import EditTitleBoard from "@/components/EditTitleBoard";
 
 type BoardProps = {
   cards: CardType[];
   setCards: Dispatch<SetStateAction<CardType[]>>;
   fetchCards: () => Promise<void>;
-  board: BoardType[];
 };
 
 export default function Board({
   cards,
   setCards,
   fetchCards,
-  board,
 }: BoardProps) {
   return (
     <div>
-      {board.map((item, index) => {
-        return <h1 key={index} className="px-12 pt-6 font-semibold text-2xl">{item.title}</h1>;
-      })}
+
+      <EditTitleBoard />
 
       <div className="flex h-full w-full gap-3 overflow-auto p-12">
         <Column

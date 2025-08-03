@@ -33,48 +33,51 @@ export const Column = ({
     );
 
   const handleDragStart = (e: DragEvent, card: CardType) => {
-    e.dataTransfer.setData("cardId", card.id);
+    // Si el id no existe, no se puede arrastrar
+    if (typeof card.id === "undefined") return;
+    e.dataTransfer.setData("cardId", String(card.id));
   };
 
   const handleDragEnd = async (e: DragEvent) => {
-    const cardId = e.dataTransfer.getData("cardId");
-  
+    const cardIdStr = e.dataTransfer.getData("cardId");
+    const cardId = Number(cardIdStr);
+
     setActive(false);
     clearHighlights(getIndicators());
-  
+
     const { element } = getNearestIndicator(e.nativeEvent, getIndicators());
-    const before = element.dataset.before || "-1";
-  
+    const beforeStr = element.dataset.before || "-1";
+    const before = Number(beforeStr);
+
     if (before !== cardId) {
       setCards((prev) => {
         let cardsCopy = [...prev];
-  
+
         // 1️⃣ Sacar la tarjeta original
-        const cardIndex = cardsCopy.findIndex((c) => String(c.id) === String(cardId));
-        if (cardIndex === -1) return prev; // Si no la encuentra, no hacemos nada
-  
+        const cardIndex = cardsCopy.findIndex((c) => c.id === cardId);
+        if (cardIndex === -1) return prev;
+
         const [cardToTransfer] = cardsCopy.splice(cardIndex, 1);
-  
+
         // 2️⃣ Actualizar su columna
         cardToTransfer.column = column;
-  
+
         // 3️⃣ Si es mover al final
-        if (before === "-1") {
+        if (before === -1) {
           cardsCopy.push(cardToTransfer);
         } else {
           // Buscar posición exacta donde insertarla
-          const insertIndex = cardsCopy.findIndex((c) => String(c.id) === String(before));
+          const insertIndex = cardsCopy.findIndex((c) => c.id === before);
           if (insertIndex === -1) {
             cardsCopy.push(cardToTransfer);
           } else {
             cardsCopy.splice(insertIndex, 0, cardToTransfer);
           }
         }
-  
-        // ✅ Devolver nuevo estado
+
         return cardsCopy;
       });
-  
+
       // ✅ Actualizar backend
       try {
         await updateCardColumn(cardId, column);
@@ -83,9 +86,8 @@ export const Column = ({
       }
     }
   };
-  
 
-  const updateCardColumn = async (cardId: string, column_name: string) => {
+  const updateCardColumn = async (cardId: number, column_name: string) => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/cards/update-card`,
       {
@@ -100,7 +102,7 @@ export const Column = ({
       console.error("❌ Error backend:", errText);
     }
 
-    fetchCards()
+    fetchCards();
   };
 
   const handleDragOver = (e: DragEvent) => {

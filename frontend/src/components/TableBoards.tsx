@@ -10,17 +10,67 @@ import {
 } from "@heroui/react";
 import type { SVGProps } from "react";
 import React, { Dispatch, SetStateAction } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 type BoardsProps = {
   boards: TableBoardType[];
   setBoards: Dispatch<SetStateAction<TableBoardType[]>>;
+  userId: number | undefined;
 };
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
-export default function TableBoards({ boards, setBoards }: BoardsProps) {
+export default function TableBoards({
+  boards,
+  setBoards,
+  userId,
+}: BoardsProps) {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const deleteBoard = (id: number) => {
+    try {
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/boards/delete-board`, {
+        id,
+      });
+      getIdUser();
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  const getIdUser = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/get-id-user`,
+        {
+          email: session?.user?.email,
+        }
+      );
+
+      fetchListBoards(response.data.id);
+    } catch (error) {
+      console.error("Error getIdUser:", error);
+    }
+  };
+
+  const fetchListBoards = async (id: number) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/boards/get-boards`,
+        {
+          user_id: id,
+        }
+      );
+      setBoards(response.data.result);
+    } catch (error) {
+      console.error("Error getBoards:", error);
+    }
+  };
+
   return (
     <Table
       aria-label="Example static collection table"
@@ -40,12 +90,16 @@ export default function TableBoards({ boards, setBoards }: BoardsProps) {
               <TableCell className="flex gap-2">
                 <Tooltip content="Editar tablero">
                   <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                    <EditIcon />
+                    <EditIcon
+                      onClick={() =>
+                        router.push(`/user/${userId}/board/${item.id}`)
+                      }
+                    />
                   </span>
                 </Tooltip>
                 <Tooltip color="danger" content="Eliminar tablero">
                   <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                    <DeleteIcon />
+                    <DeleteIcon onClick={() => deleteBoard(item.id)} />
                   </span>
                 </Tooltip>
               </TableCell>

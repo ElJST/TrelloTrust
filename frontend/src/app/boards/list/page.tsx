@@ -8,16 +8,19 @@ import { Divider } from "@heroui/react";
 
 export default function ListBoardsPage() {
   const [boards, setBoards] = useState<TableBoardType[]>([]);
+  const [idUser, setIdUser] = useState<number>();
   const { data: session } = useSession();
 
   const getIdUser = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.1.157:5000/api/users/get-id-user",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/get-id-user`,
         {
           email: session?.user?.email,
         }
       );
+
+      setIdUser(response.data.id);
 
       fetchListBoards(response.data.id);
     } catch (error) {
@@ -28,17 +31,17 @@ export default function ListBoardsPage() {
   const fetchListBoards = async (id: number) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.157:5000/api/boards/get-boards",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/boards/get-boards`,
         {
           user_id: id,
         }
       );
       setBoards(response.data.result);
-      debugger;
     } catch (error) {
       console.error("Error getBoards:", error);
     }
   };
+  
   useEffect(() => {
     if (session?.user?.email) {
       getIdUser();
@@ -47,7 +50,7 @@ export default function ListBoardsPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center ">
-      <TableBoards boards={boards} setBoards={setBoards} />
+      <TableBoards boards={boards} setBoards={setBoards} userId={idUser} />
       <Divider className="my-4 w-3/4" />
     </div>
   );

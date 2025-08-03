@@ -17,9 +17,23 @@ export const queryGetBoardsByUser = async (id) => {
 };
 
 export const queryGetBoardsById = async (id) => {
-  const [rows] = await db.query(
-    "SELECT id, title FROM boards WHERE id = ?",
-    [id]
-  );
+  const [rows] = await db.query("SELECT id, title FROM boards WHERE id = ?", [
+    id,
+  ]);
+  return rows;
+};
+
+export const queryUpdateTitle = async ( title ,id ) => {
+  const [rows] = await db.query("UPDATE boards SET title = ? WHERE id = ?", [
+    title,
+    id,
+  ]);
+  return rows;
+};
+
+export const queryDeleteBoard = async ( id ) => {
+  const [rows] = await db.query("DELETE FROM boards WHERE id = ?", [
+    id,
+  ]);
   return rows;
 };

@@ -1,7 +1,9 @@
 import {
   queryInsertBoard,
   queryGetBoardsByUser,
-  queryGetBoardsById
+  queryGetBoardsById,
+  queryUpdateTitle,
+  queryDeleteBoard
 } from "../models/board.model.js";
 
 export const createBoard = async (req, res) => {
@@ -33,9 +35,31 @@ export const getOneBoards = async (req, res) => {
     const { id } = req.body;
     const result = await queryGetBoardsById(id);
     
-    console.log(result)
     res.status(201).json({ result });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateTitleBoard = async (req, res) => {
+  try {
+    const { id, title } = req.body;
+    const result = await queryUpdateTitle(title, id);
+    
+    res.status(201).json({ result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+export const deleteRowBoard = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const result = await queryDeleteBoard(id);
+    
+    res.status(201).json({ result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+

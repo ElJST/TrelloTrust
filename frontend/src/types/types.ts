@@ -1,7 +1,7 @@
 export type ColumnType = "todo" | "doing" | "done";
 
 export type CardType = {
-  id: string;
+  id?: number; // id ahora es opcional y tipo number
   title: string;
   column: ColumnType;
 };

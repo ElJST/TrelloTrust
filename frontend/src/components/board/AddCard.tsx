@@ -16,30 +16,39 @@ export const AddCard = ({ column, setCards }: AddCardProps) => {
   const [adding, setAdding] = useState(false);
   const { boardId } = useParams();
 
+  const fetchCards = async () => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cards/get-card`,
+        {
+          board_id: boardId,
+        }
+      );
+      const cards = res.data.map((card: any) => ({
+        ...card,
+        column: card.column_name,
+      }));
+      setCards(cards);
+    } catch (err) {
+      console.error("❌ Error fetching cards:", err);
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!text.trim().length) return;
 
-    // ✅ Card para el estado local
-    const newCard: CardType = {
-      id: crypto.randomUUID(),
-      title: text.trim(),
-      column
-    };
-
-    // ✅ Card para el backend
     const backendCard = {
-      id: newCard.id,
       board_id: boardId, 
-      title: newCard.title,
-      column_name: newCard.column, 
+      title: text.trim(),
+      column_name: column, 
     };
 
-    setCards((prev) => [...prev, newCard]);
-
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/cards/add-card`, {
-      ...backendCard,
-    });
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/cards/add-card`,
+      backendCard
+    );
+    fetchCards()
 
     setAdding(false);
     setText("");
