@@ -4,10 +4,10 @@
 
 ## 🧩 Tecnologías utilizadas
 
-- **Frontend:** Next.js 14, TypeScript, TailwindCSS
+- **Frontend:** Next.js, TypeScript, TailwindCSS
 - **Backend:** Node.js + Express
-- **Base de datos:** MySQL (mediante Docker)
-- **Docker:** Docker y Docker Compose para orquestación de contenedores
+- **Base de datos:** MySQL (mediante Docker Compose)
+- **Docker:** Docker Compose
 
 ---
 
@@ -17,6 +17,7 @@
 Trello-Trust/
 ├── backend/             # API REST con Express
 ├── frontend/            # Interfaz de usuario con Next.js
+├── mysql_data/          # Persistencia de datos (cuando levantes el contenedor)
 ├── docker-compose.yml   # Configuración de servicios Docker
 └── README.md
 ```
@@ -33,8 +34,8 @@ Trello-Trust/
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/tuusuario/trello-trust.git
-cd trello-trust
+git clone https://github.com/ElJST/TrelloTrust.git
+cd TrelloTrust
 ```
 
 ### 2. Inicia los contenedores Docker
@@ -47,14 +48,16 @@ Esto levantará un contenedor con MySQL accesible desde el backend.
 
 ### 3. Configura variables de entorno
 
-#### Backend (`backend/.env`)
+#### Backend (`backend/.env`) (.env de ejemplo)
 
 ```
-DB_HOST=db
+PORT=3306
+DB_HOST=127.0.0.1
 DB_USER=root
 DB_PASSWORD=123456
-DB_NAME=trello_trust
-PORT=5000
+DB_NAME=trust
+
+PORT_SERVER=5000
 ```
 
 #### Frontend (`frontend/.env.local`)
@@ -68,7 +71,7 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```bash
 cd backend
 npm install
-npm run dev
+node server.js
 ```
 
 ### 5. Inicia el frontend
@@ -115,9 +118,3 @@ npm run dev
 
 - `db`: Contenedor MySQL con volúmenes persistentes.
 - Puedes acceder a la base de datos con herramientas como DBeaver, host: `localhost`, puerto: `3306`, user: `root`, password: `123456`.
-
----
-
-## 📄 Licencia
-
-MIT
