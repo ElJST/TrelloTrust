@@ -33,7 +33,6 @@ export const Column = ({
     );
 
   const handleDragStart = (e: DragEvent, card: CardType) => {
-    // Si el id no existe, no se puede arrastrar
     if (typeof card.id === "undefined") return;
     e.dataTransfer.setData("cardId", String(card.id));
   };
@@ -78,7 +77,6 @@ export const Column = ({
         return cardsCopy;
       });
 
-      // ✅ Actualizar backend
       try {
         await updateCardColumn(cardId, column);
       } catch (err) {

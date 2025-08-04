@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FaLinkedin, FaTiktok } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 
 export const Footer = () => {
   return (
@@ -71,26 +72,24 @@ export const Footer = () => {
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-3">Nosotros</h3>
-          <ul className="space-y-2 text-gray-400">
-            <li>
+          <h3 className="text-lg font-semibold mb-3">Mis perfiles</h3>
+          <ul className="text-gray-400">
+            <li className="space-y-2">
               <a
                 href="https://www.linkedin.com/in/justin-campuzano-n-5bbb182a3/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white flex items-center gap-2"
               >
-                Justin Campuzano <FaLinkedin size={25} />
+                Perfil en Linkedin <FaLinkedin size={25} />
               </a>
-            </li>
-            <li>
               <a
-                href="#"
+                href="https://github.com/ElJST"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white flex items-center gap-2"
               >
-                Estela Pardo <FaLinkedin size={25} />
+                Perfil en Github<FaGithub size={25} />
               </a>
             </li>
           </ul>
