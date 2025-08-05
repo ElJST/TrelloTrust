@@ -33,6 +33,7 @@ export default function LoginForm() {
     });
     if (res?.error) {
       setError("Invalid credentials");
+      setLoading(false);
     } else {
       setLoading(false);
       router.push("/");
@@ -66,6 +67,7 @@ export default function LoginForm() {
         isDisabled={loading}
         radius="full"
       />
+      {error && <p className="text-red-500">{error}</p>}
       <section className="flex gap-4 mt-2">
         <Button
           type="submit"
