@@ -39,7 +39,7 @@ export const NavBar = () => {
     "Que puedes hacer": "/que-puedes-hacer",
     "Como Hacerlo": "/como-hacerlo",
   };
-  // funcion para obtener el id del usuario activo 
+  // funcion para obtener el id del usuario activo
   const getIdUser = async () => {
     try {
       const response = await axios.post(
@@ -56,7 +56,7 @@ export const NavBar = () => {
       console.error("Error getIdUser:", error);
     }
   };
-  // funcion para crear un nuevo tablero  
+  // funcion para crear un nuevo tablero
   const getBoardId = async (userId: number) => {
     try {
       const response = await axios.post(
@@ -68,28 +68,30 @@ export const NavBar = () => {
       );
 
       const boardId = response.data.id;
-      
-      createNewCard(userId, boardId);
 
+      createNewCard(userId, boardId);
     } catch (error) {
       console.error("Error getBoardId:", error);
     }
   };
   // funcion para crear una tarjeta de ejemplo y redirigir al usuario al tablero creado
-  // con el id del usuario y el id del tablero  
+  // con el id del usuario y el id del tablero
   const createNewCard = async (idUser: number, idBoard: number) => {
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/cards/add-card`, {
-        board_id: idBoard,
-        title: "Tarea de ejemplo",
-        column_name: "todo",
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cards/add-card`,
+        {
+          board_id: idBoard,
+          title: "Tarea de ejemplo",
+          column_name: "todo",
+        }
+      );
 
       router.push(`/user/${idUser}/board/${idBoard}`);
     } catch (error) {
       console.error("Error createNewCard:", error);
     }
-  }
+  };
 
   return (
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen} isMenuOpen={isMenuOpen}>
@@ -129,6 +131,9 @@ export const NavBar = () => {
                     as="button"
                     className="transition-transform"
                     name={session.user.name}
+                    style={{
+                      textTransform: "capitalize",
+                    }}
                   />
                 </DropdownTrigger>
                 <DropdownMenu variant="shadow">
@@ -140,7 +145,7 @@ export const NavBar = () => {
                     <button onClick={getIdUser}>Nuevo proyecto</button>
                   </DropdownItem>
                   <DropdownItem key="team_settings" color="primary">
-                    <Link href={'/boards/list'}>Editar proyecto</Link>
+                    <Link href={"/boards/list"}>Editar proyecto</Link>
                   </DropdownItem>
                   <DropdownItem
                     key="logout"
